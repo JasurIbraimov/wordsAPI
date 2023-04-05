@@ -8,11 +8,11 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-app.get("/words/word", (req, res) => {
+app.get("/word", (req, res) => {
     return res.sendFile(__dirname + "/public/index.html")
 })
 
-app.post("/words/word", async (req, res) => {
+app.post("/word", async (req, res) => {
     const { wordEng, wordRu, category } = req.body;
     await db.collection("words").add({
         word: {ru: wordRu, eng: wordEng},
@@ -22,7 +22,7 @@ app.post("/words/word", async (req, res) => {
     return res.redirect("/words/word")
 })
 
-app.get("/words/:lang/:category/", async (req, res) => {
+app.get("/:lang/:category/", async (req, res) => {
     const { lang, category } = req.params;
     const snapShot = await db.collection("words").get()
     let data = []
