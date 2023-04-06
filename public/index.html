@@ -90,15 +90,12 @@
                 type="text"
                 placeholder="Введите его перевод"
             />
-            <select name="category">
+            <select title="Choose category of word" name="category">
                 <option value="easy">Easy</option>
                 <option value="normal">Normal</option>
                 <option value="hard">Hard</option>
             </select>
-            <button>Send!</button>
-            <% if (message != "") { %>
-                <span class="message"><%= message %></span>
-            <% }%>
+            <button type="submit">Send!</button>
         </form>
 
         <div class="get">
@@ -130,6 +127,7 @@
                     link.href = "words" + "/" + lang + "/" + link.innerHTML.toLowerCase();
                 });
             });
+
         </script>
     </body>
 </html>

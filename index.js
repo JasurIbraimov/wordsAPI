@@ -7,7 +7,6 @@ app.use(cors())
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
-app.set('view engine', 'ejs');
 
 async function fetchWordsByLangAndCategory(lang, category) {
     const snapShot = await db.collection("words").get()
@@ -20,7 +19,7 @@ async function fetchWordsByLangAndCategory(lang, category) {
 }
 
 app.get("/word", (req, res) => {
-    return res.render(__dirname + "/public/index", {message: ""})
+    return res.sendFile(__dirname + "/public/index.html")
 })
 
 app.post("/word", async (req, res) => {
@@ -43,17 +42,21 @@ app.post("/word", async (req, res) => {
         category: category
     })
 
-    return res.render(__dirname + "/public/index", {message: "Word Added Successfully!"})
+    return res.status(200).send({"message": "The word " + wordRu + " - " + wordEng + " created successfully!"})
 })
 
-app.get("/word/delete/:id", async (req, res) => {
+app.get("/api/delete/:id", async (req, res) => {
     const {id} = req.params;
     const doc = await db.collection("words").doc(id).get()
     await db.collection("words").doc(id).delete()
     return res.status(200).send({message: "The word " + doc.data().word.ru + " - " +doc.data().word.eng + " successfully deleted!"})
 })
 
-app.get("/words/:lang/:category", async (req, res) => {
+app.get("/words/:lang/:category", (req, res) => {
+    return res.sendFile(__dirname + "/public/words.html")
+})
+
+app.get("/api/:lang/:category", async (req, res) => {
     const { lang, category } = req.params;
     const snapShot = await db.collection("words").get()
     let data = []
@@ -61,7 +64,7 @@ app.get("/words/:lang/:category", async (req, res) => {
         data.push({...doc.data(), id: doc.id})
     })
     data = data.filter(q => q.category == category).map(q => ({word: q.word[lang], id: q.id}))
-    return res.render(__dirname + "/public/words", {words: data})
+    return res.send(data)
 })  
 
 app.get("/:lang/:category/", async (req, res) => {

@@ -41,13 +41,14 @@
             li span {
                 padding: 10px;
             }
-            li a { 
+            li button {
+                border: none; 
                 padding: 10px;
                 text-decoration: none;
                 color: white;
                 background-color: red;
             }
-            li a:hover {
+            li button:hover {
                 background-color: rgb(187, 19, 19);
             }
             .back {
@@ -65,12 +66,37 @@
 </head>
 <body>
     <ul>
-        <% for(let word of words) { %>
-            <li>
-                <span><%= word.word %></span> <a href="/word/delete/<%= word.id %>">X</a>
-            </li>
-        <%  } %>
+        <span class="loader">Loading...</span>
     </ul>
     <a class="back" href="/word">BACK</a>
+    <script>
+        const loader = document.querySelector(".loader")
+        const ul = document.querySelector("ul")
+        fetch(window.location.pathname.replace("words", "api"))
+        .then((data) => data.json())
+        .then(data => {
+            data.forEach(w => {
+                const li = document.createElement("li")
+                const span = document.createElement("span")
+                span.innerHTML = w.word
+                const button= document.createElement("button")
+                button.setAttribute("data-id", w.id) 
+                button.innerHTML = "X"
+                button.addEventListener("click", (e) => {
+                    fetch("/api/delete/" + e.target.dataset.id)
+                    .then((data) => {
+                        window.location.reload()
+                    })
+                })
+                li.appendChild(span)
+                li.appendChild(button)
+                ul.appendChild(li)
+            })
+        })
+        .finally(() => {
+            loader.remove()
+        })
+
+    </script>
 </body>
 </html>
