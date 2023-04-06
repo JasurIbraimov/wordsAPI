@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Words Generator</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            body {
+                background-color: #34495e;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                height: 100vh;
+            }
+            form,
+            .get {
+                background-color: white;
+                padding: 20px;
+                border-radius: 20px;
+                width: 300px;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.61);
+            }
+
+            form input,
+            select,
+            button {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #34495e;
+                font-size: 16px;
+                outline: none;
+                margin-bottom: 10px;
+                border-radius: 10px;
+            }
+            button {
+                background-color: #34495e;
+                cursor: pointer;
+                color: white;
+            }
+            .get {
+                margin-top: 20px;
+            }
+            .get a {
+                padding: 10px;
+                background-color: #34495e;
+                border-radius: 10px;
+                color: white;
+                text-decoration: none;
+                display: inline-block;
+                margin: 10px;
+            }
+            h1 {
+                margin-bottom: 10px;
+            }
+            .langs input {
+                margin-right: 10px;
+                cursor: pointer;
+            }
+            .langs {
+                text-align: center;
+                margin: 20px 0;
+            }
+            .langs label{
+                cursor: pointer;
+                font-size: 18px;
+            }
+            .message {
+                background-color: #34495e;
+                padding: 5px;
+                color: white;
+                text-align: center;
+                margin-top: 10px;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <form action="" method="POST">
+            <input name="wordEng" type="text" placeholder="Type word" />
+            <input
+                name="wordRu"
+                type="text"
+                placeholder="Введите его перевод"
+            />
+            <select name="category">
+                <option value="easy">Easy</option>
+                <option value="normal">Normal</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button>Send!</button>
+            <% if (message != "") { %>
+                <span class="message"><%= message %></span>
+            <% }%>
+        </form>
+
+        <div class="get">
+            <h1>GET WORDS:</h1>
+            <div class="langs">
+                <label for="ru">RU</label>
+                <input id="ru" type="radio" name="language" checked />
+                <label for="eng">ENG</label>
+                <input id="eng" type="radio" name="language" />
+            </div>
+
+            <a class="link" href="words/ru/easy">Easy</a>
+            <a class="link" href="words/ru/normal">Normal</a>
+            <a class="link" href="words/ru/hard">Hard</a>
+        </div>
+
+        <script>
+            let lang = "ru";
+            document.querySelector("#ru").addEventListener("change", () => {
+                lang = "ru";
+                document.querySelectorAll(".link").forEach((link) => {
+                    link.href = "words" + "/" + lang + "/" + link.innerHTML.toLowerCase();
+                });
+            });
+            document.querySelector("#eng").addEventListener("change", () => {
+                lang = "eng";
+                console.log(lang);
+                document.querySelectorAll(".link").forEach((link) => {
+                    link.href = "words" + "/" + lang + "/" + link.innerHTML.toLowerCase();
+                });
+            });
+        </script>
+    </body>
+</html>
